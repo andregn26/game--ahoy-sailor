@@ -1,5 +1,4 @@
 //Obstacle
-const rocksArray = []
 class Rock {
   constructor(radius, speed) {
     this.x = Math.random() * canvas.width
@@ -7,9 +6,14 @@ class Rock {
     this.radius = radius
     this.speed = speed
     this.distance
+    this.damage = -30
+    this.damageCounted = false
   }
   update() {
     this.y += this.speed
+    const dx = this.x - player.x
+    const dy = this.y - player.y
+    this.distance = Math.sqrt(dx * dx + dy * dy)
   }
   draw() {
     ctx.fillStyle = "brown"
@@ -20,26 +24,6 @@ class Rock {
     ctx.stroke()
   }
 }
-
-function handleRocks() {
-  if (gameFrame % 300 === 0) {
-    rocksArray.push(new Rock(40, 1.5))
-    console.log("this console -->", rocksArray)
-  }
-  for (let i = 0; i < rocksArray.length; i++) {
-    rocksArray[i].update()
-    rocksArray[i].draw()
-  }
-  for (let i = 0; i < rocksArray.length; i++) {
-    if (rocksArray[i].y > canvas.height + rocksArray[i].radius * 2) {
-      rocksArray.splice(i, 1)
-    }
-  }
-}
-
-let time = 0
-
-const seagulsArray = []
 class Seagul {
   constructor(radius, speed) {
     this.x = Math.random() * canvas.width
@@ -50,7 +34,10 @@ class Seagul {
   }
   update() {
     this.y += this.speed
-    this.x += Math.cos(time) * 3 // y = ƒ(x)
+    this.x += Math.cos(seagulsCurrentTime) * 3 // y = ƒ(x)
+    const dx = this.x - player.x
+    const dy = this.y - player.y
+    this.distance = Math.sqrt(dx * dx + dy * dy)
   }
   draw() {
     ctx.fillStyle = "white"
@@ -62,12 +49,28 @@ class Seagul {
   }
 }
 
-function handleSeaguls() {
-  if (gameFrame % 700 === 0) {
-    seagulsArray.push(new Seagul(20, 0.7))
+class Fish {
+  constructor(radius, speed) {
+    this.x = Math.random() * canvas.width
+    this.y = 0 - radius * 2
+    this.radius = radius
+    this.speed = speed
+    this.distance
+    this.pointCounted = false
   }
-  for (let i = 0; i < seagulsArray.length; i++) {
-    seagulsArray[i].update()
-    seagulsArray[i].draw()
+  update() {
+    this.y += this.speed
+    this.x += Math.sin(fishesCurrentTime) * 3 // y = ƒ(x)
+    const dx = this.x - player.x
+    const dy = this.y - player.y
+    this.distance = Math.sqrt(dx * dx + dy * dy)
+  }
+  draw() {
+    ctx.fillStyle = "yellow"
+    ctx.beginPath()
+    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2)
+    ctx.fill()
+    ctx.closePath()
+    ctx.stroke()
   }
 }

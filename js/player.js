@@ -1,6 +1,4 @@
 //Player
-let delay = 30
-
 class Player {
   constructor() {
     this.x = canvas.width
@@ -12,16 +10,17 @@ class Player {
     this.frame = 0
     this.spriteWidth = 200
     this.spriteHeight = 200
+    this.delay = 30
   }
   update() {
     //dx stands for "displacement of the X-Axis". Represents the movement
     const dx = this.x - mouse.x
     const dy = this.y - mouse.y
     if (mouse.x != this.x) {
-      this.x -= dx / delay
+      this.x -= dx / this.delay
     }
     if (mouse.y != this.y) {
-      this.y -= dy / delay
+      this.y -= dy / this.delay
     }
   }
   draw() {
@@ -40,5 +39,3 @@ class Player {
     ctx.fillRect(this.x, this.y, this.radius, 10)
   }
 }
-
-const player = new Player()
