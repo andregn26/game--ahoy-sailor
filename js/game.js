@@ -16,9 +16,11 @@ let lost = false
 let gameFrame = 0
 
 const rocksArray = []
+let crashSound = document.createElement("audio")
+crashSound.src = "../audio/crash.ogg"
 const seagulsArray = []
-const fishesArray = []
 let seagulsCurrentTime = 0
+const fishesArray = []
 let fishesCurrentTime = 0
 
 function handleRocks() {
@@ -36,8 +38,9 @@ function handleRocks() {
     }
     if (rocksArray[i].distance < rocksArray[i].radius + player.radius) {
       if (!rocksArray[i].damageCounted) {
-        currentLife = currentLife - 10
+        currentLife = currentLife - 20
         rocksArray[i].damageCounted = true
+        crashSound.play()
         console.log(currentLife)
       }
     }
@@ -51,7 +54,7 @@ function handleSeaguls() {
   for (let i = 0; i < seagulsArray.length; i++) {
     seagulsArray[i].update()
     seagulsArray[i].draw()
-    console.log(seagulsArray)
+    // console.log(seagulsArray)
   }
   for (let i = 0; i < seagulsArray.length; i++) {
     if (seagulsArray[i].y > canvas.height + seagulsArray[i].radius * 2) {
@@ -72,6 +75,9 @@ function handleFishes() {
     fishesArray[i].update()
     fishesArray[i].draw()
     console.log(fishesArray)
+    if (fishesArray[i].y > canvas.height + fishesArray[i].radius * 2) {
+      fishesArray.splice(i, 1)
+    }
   }
   for (let i = 0; i < fishesArray.length; i++) {
     if (fishesArray[i].distance < fishesArray[i].radius + player.radius) {
@@ -82,6 +88,7 @@ function handleFishes() {
       if ((fishesArray[i].pointCounted = true)) {
         fishesArray.splice(i, 1)
       }
+
       console.log("colision fish")
     }
   }

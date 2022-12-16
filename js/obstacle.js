@@ -8,6 +8,7 @@ class Rock {
     this.distance
     this.damage = -30
     this.damageCounted = false
+    this.sound = "crash"
   }
   update() {
     this.y += this.speed
