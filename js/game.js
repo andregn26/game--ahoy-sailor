@@ -1,45 +1,62 @@
 class Game {
   constructor() {
+    this.player = {}
+    this.rocksArray = []
+    this.seagullsArray = []
+    this.fishesArray = []
     this.animationId = null
-    this.score = 0
+    this.gameWin = false
     this.gameOver = false
+    this.life = 100
+    this.score = 0
   }
 }
 
-const player = new Player()
-let currentLife = 100
-let losingLife = 0
-let currentScore = 0
-let winningScore = 1000
-let won = false
-let lost = false
+let currentGame = new Game()
+let player = new Player()
+let currentRocksArray = currentGame.rocksArray
+currentSeagullsArray = currentGame.seagullsArray
+currentFishesArray = currentGame.fishesArray
+currentScore = currentGame.score
+currentLife = currentGame.life
+currentGameOver = currentGame.gameOver
+currentAnimationId = currentGame.animationId
+
 let gameFrame = 0
 
-const rocksArray = []
 let crashSound = document.createElement("audio")
-crashSound.src = "../audio/crash.ogg"
-const seagulsArray = []
+// crashSound.src = "../audio/crash.ogg"
 let seagulsCurrentTime = 0
-const fishesArray = []
 let fishesCurrentTime = 0
 
+function handlePlayer() {
+  player.update()
+  player.draw()
+}
+
 function handleRocks() {
-  if (gameFrame % 300 === 0) {
-    rocksArray.push(new Rock(40, 1.5))
+  if (gameFrame % 350 === 0) {
+    currentRocksArray.push(new Rock(50, 1.5))
     // console.log("this console -->", rocksArray)
   }
-  for (let i = 0; i < rocksArray.length; i++) {
-    rocksArray[i].update()
-    rocksArray[i].draw()
+  for (let i = 0; i < currentRocksArray.length; i++) {
+    currentRocksArray[i].update()
+    currentRocksArray[i].draw()
   }
-  for (let i = 0; i < rocksArray.length; i++) {
-    if (rocksArray[i].y > canvas.height + rocksArray[i].radius * 2) {
-      rocksArray.splice(i, 1)
+  for (let i = 0; i < currentRocksArray.length; i++) {
+    if (
+      currentRocksArray[i].y >
+      canvas.height + currentRocksArray[i].radius * 2
+    ) {
+      currentRocksArray.splice(i, 1)
     }
-    if (rocksArray[i].distance < rocksArray[i].radius + player.radius) {
-      if (!rocksArray[i].damageCounted) {
+    if (
+      currentRocksArray[i].distance <
+      currentRocksArray[i].radius + player.radius
+    ) {
+      if (!currentRocksArray[i].damageCounted) {
         currentLife = currentLife - 20
-        rocksArray[i].damageCounted = true
+        currentRocksArray[i].damageCounted = true
         crashSound.play()
         console.log(currentLife)
       }
@@ -48,19 +65,25 @@ function handleRocks() {
 }
 
 function handleSeaguls() {
-  if (gameFrame % 700 === 0) {
-    seagulsArray.push(new Seagul(20, 0.7))
+  if (gameFrame % 500 === 0) {
+    currentSeagullsArray.push(new Seagul(20))
   }
-  for (let i = 0; i < seagulsArray.length; i++) {
-    seagulsArray[i].update()
-    seagulsArray[i].draw()
+  for (let i = 0; i < currentSeagullsArray.length; i++) {
+    currentSeagullsArray[i].update()
+    currentSeagullsArray[i].draw()
     // console.log(seagulsArray)
   }
-  for (let i = 0; i < seagulsArray.length; i++) {
-    if (seagulsArray[i].y > canvas.height + seagulsArray[i].radius * 2) {
-      seagulsArray.splice(i, 1)
+  for (let i = 0; i < currentSeagullsArray.length; i++) {
+    if (
+      currentSeagullsArray[i].y >
+      canvas.height + currentSeagullsArray[i].radius * 2
+    ) {
+      currentSeagullsArray.splice(i, 1)
     }
-    if (seagulsArray[i].distance < seagulsArray[i].radius + player.radius) {
+    if (
+      currentSeagullsArray[i].distance <
+      currentSeagullsArray[i].radius + player.radius
+    ) {
       console.log("colision seagul")
       currentScore--
     }
@@ -68,28 +91,83 @@ function handleSeaguls() {
 }
 
 function handleFishes() {
-  if (gameFrame % 500 === 0) {
-    fishesArray.push(new Fish(30, 0.7))
+  if (gameFrame % 150 === 0) {
+    currentFishesArray.push(new Fish(30, 0.7))
   }
-  for (let i = 0; i < fishesArray.length; i++) {
-    fishesArray[i].update()
-    fishesArray[i].draw()
-    console.log(fishesArray)
-    if (fishesArray[i].y > canvas.height + fishesArray[i].radius * 2) {
-      fishesArray.splice(i, 1)
+  for (let i = 0; i < currentFishesArray.length; i++) {
+    currentFishesArray[i].update()
+    currentFishesArray[i].draw()
+    // console.log(fishesArray)
+    if (
+      currentFishesArray[i].y >
+      canvas.height + currentFishesArray[i].radius * 2
+    ) {
+      currentFishesArray.splice(i, 1)
     }
   }
-  for (let i = 0; i < fishesArray.length; i++) {
-    if (fishesArray[i].distance < fishesArray[i].radius + player.radius) {
-      if (!fishesArray[i].pointCounted) {
+  for (let i = 0; i < currentFishesArray.length; i++) {
+    if (
+      currentFishesArray[i].distance <
+      currentFishesArray[i].radius + player.radius
+    ) {
+      if (!currentFishesArray[i].pointCounted) {
         currentScore += 10
-        fishesArray[i].pointCounted = true
+        currentFishesArray[i].pointCounted = true
       }
-      if ((fishesArray[i].pointCounted = true)) {
-        fishesArray.splice(i, 1)
+      if ((currentFishesArray[i].pointCounted = true)) {
+        currentFishesArray.splice(i, 1)
       }
 
-      console.log("colision fish")
+      // console.log("colision fish")
     }
   }
+}
+
+function startGame() {
+  currentGame.player = player
+  animateCanva()
+}
+function gameOver() {
+  if (currentLife <= 0) {
+    currentGameOver = true
+    console.log("gameover")
+  }
+  if (currentScore < 0) {
+    currentGameOver = true
+    console.log("gameover")
+  }
+}
+
+//Animate loop
+function time() {
+  if (gameFrame % 30 === 0) {
+    seagulsCurrentTime += 1
+    fishesCurrentTime += 1
+  }
+}
+
+function clearCanva() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height)
+}
+function animateCanva() {
+  clearCanva()
+  time()
+  gameFrame++
+  handleFishes()
+  handleRocks()
+  handlePlayer()
+  handleSeaguls()
+
+  ctx.fillStyle = "black"
+  ctx.fillText("score: " + currentScore, 10, 50)
+  ctx.fillStyle = "black"
+  ctx.fillText("life: " + currentLife, 400, 50)
+  ctx.fillStyle = "black"
+  ctx.fillText("time: " + currentGame.timer, 400, 150)
+  gameOver()
+
+  if (!currentGameOver) {
+    requestAnimationFrame(animateCanva)
+  }
+  // console.log(time)
 }

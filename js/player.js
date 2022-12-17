@@ -10,7 +10,7 @@ class Player {
     this.frame = 0
     this.spriteWidth = 200
     this.spriteHeight = 200
-    this.delay = 30
+    this.delay = 80
   }
   update() {
     //dx stands for "displacement of the X-Axis". Represents the movement
@@ -36,6 +36,6 @@ class Player {
     ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2)
     ctx.fill()
     ctx.closePath()
-    ctx.fillRect(this.x, this.y, this.radius, 10)
+    // ctx.fillRect(this.x, this.y, this.radius, 10)
   }
 }

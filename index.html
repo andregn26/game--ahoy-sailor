@@ -6,16 +6,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <link rel="shortcut icon" href="#" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400&family=Yeseva+One&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="index.css" />
   </head>
-  <body>
-    <container>
+  <body id="body">
+    <container id="start_container" class="container flexCenter">
+      <h1>Start Container</h1>
+      <div>
+        <button id="btn--startGame">start game</button>
+        <button id="btn--instructions">Instructions</button>
+      </div>
+    </container>
+    <container id="game_container" class="d-none">
+      <nav>
+        <ul>
+          <li></li>
+        </ul>
+      </nav>
       <canvas id="canvas1"></canvas>
     </container>
   </body>
+
   <script src="./js/setup.js"></script>
   <script src="./js/player.js"></script>
   <script src="./js/obstacle.js"></script>
+  <script src="./js/utils.js"></script>
   <script src="./js/game.js"></script>
+  <script src="./js/ui.js"></script>
   <script src="./js/index.js"></script>
 </html>

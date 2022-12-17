@@ -2,8 +2,8 @@
 
 const canvas = document.getElementById("canvas1")
 const ctx = canvas.getContext("2d")
-canvas.width = 800
-canvas.height = 500
+canvas.width = 900
+canvas.height = 506
 
 ctx.font = "50px Verdana"
 
@@ -22,6 +22,6 @@ canvas.addEventListener("mousedown", function (event) {
   console.log("coordinates each time I click -->", mouse.x, mouse.y)
 })
 
-canvas.addEventListener("mouseup", function (event) {
+window.addEventListener("mouseup", function (event) {
   mouse.click = false
 })

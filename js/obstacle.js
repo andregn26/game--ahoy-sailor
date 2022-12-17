@@ -26,16 +26,19 @@ class Rock {
   }
 }
 class Seagul {
-  constructor(radius, speed) {
+  constructor(radius) {
     this.x = Math.random() * canvas.width
     this.y = 0 - radius * 2
     this.radius = radius
-    this.speed = speed
+    this.speed = Math.random() * 0.1 + 0.5
     this.distance
+    this.angle = Math.random()
+    this.angleSpeed = Math.random() * 0.1
   }
   update() {
     this.y += this.speed
-    this.x += Math.cos(seagulsCurrentTime) * 3 // y = ƒ(x)
+    this.x += 2 * Math.cos(this.angle) // y = ƒ(x)
+    this.angle += this.angleSpeed
     const dx = this.x - player.x
     const dy = this.y - player.y
     this.distance = Math.sqrt(dx * dx + dy * dy)
@@ -57,11 +60,16 @@ class Fish {
     this.radius = radius
     this.speed = speed
     this.distance
+    this.speed = Math.random() * 0.8 + 1
+    this.distance
+    this.angle = Math.random()
+    this.angleSpeed = Math.random() * 0.1
     this.pointCounted = false
   }
   update() {
     this.y += this.speed
-    this.x += Math.sin(fishesCurrentTime) * 3 // y = ƒ(x)
+    this.x += Math.sin(this.angle) * 0.3 // y = ƒ(x)
+    this.angle += this.angleSpeed
     const dx = this.x - player.x
     const dy = this.y - player.y
     this.distance = Math.sqrt(dx * dx + dy * dy)
